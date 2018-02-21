@@ -5,6 +5,7 @@
 using namespace cv;
 
 void wave(const Mat &image, Mat &result);
+void flip(const Mat &image, Mat &result);
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +14,7 @@ int main(int argc, char *argv[])
        return -1;
     Mat res;
 
-    wave(img, res);
+    flip(img, res);
 
     namedWindow( "lena", CV_WINDOW_AUTOSIZE );
     imshow("lena", res);
@@ -48,5 +49,22 @@ void wave(const Mat &image, Mat &result)
           INTER_LINEAR);    //método de interpolación
 }
 
+void flip(const Mat &image, Mat &result)
+{
+    // imagenes para las funciones de mapeo
+    Mat srcX(image.rows, image.cols, CV_32F);
+    Mat srcY(image.rows, image.cols, CV_32F);
 
+    // creating the mapping
+    for (int i=0; i < image.rows; i++)
+    {
+        for (int j=0; j < image.cols; j++)
+        {
+            //horizontal flipping
+            srcX.at<float>(i,j) = image.cols-j-1;
+            srcY.at<float>(i,j) = i;
+        }
+    }
 
+    remap(image, result,srcX,srcY,INTER_LINEAR);
+}
