@@ -1,0 +1,4 @@
+**/bin
+*.cbp
+*.layout
+*.o
